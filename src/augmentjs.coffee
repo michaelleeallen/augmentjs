@@ -1,93 +1,94 @@
 ###
-	-------------------------------------------------------------------------
-		AUGMENTR
-	-------------------------------------------------------------------------
-		The idea for this little library came from Douglas Crockford's book, 
-		"JavaScript: The good parts.". The idea is to provide enhancements to
-		the primitive JavaScript data types in a non-destructive way.
+  -------------------------------------------------------------------------
+    AUGMENTR
+  -------------------------------------------------------------------------
+    The idea for this little library came from Douglas Crockford's book, 
+    "JavaScript: The good parts.". The idea is to provide enhancements to
+    the primitive JavaScript data types in a non-destructive way.
 ###
 
 ### 
-	Function.prototype.method
+  Function.prototype.method
 -------------------------------------------------------------------------
-	Allows user to create new methods on primitive types without
-	overriding default implementations if present.
+  Allows user to create new methods on primitive types without
+  overriding default implementations if present.
 	
-	@param {String}name
-	@param {Function}func
+	@param {String} name
+	@param {Function} fn
 	@return {Function}
 ###
 if not Function.prototype.method
-  Function.prototype.method = (name, func) ->
+  Function.prototype.method = (name, fn) ->
     if not this.prototype[name]
-      this.prototype[name] = func;
+      this.prototype[name] = fn;
     this
 
 ###
-	String.prototype.join
+  String.prototype.join
 -------------------------------------------------------------------------	
-	Join n number of Strings to a String. Accepts any number
-	of arguments. More memory efficient that "+" String concatenation.
+  Join n number of Strings to a String. Accepts any number
+  of arguments. More memory efficient that "+" String concatenation.
    
-   Usage: "one".join("two", "three"); => "onetwothree"
+  Usage: "one".join("two", "three"); => "onetwothree"
 	
-	@param {String[]...}
-	@return {String}
+  @param {String[]...}
+  @return {String}
 ###
 String.method('join', (args...) -> [this].concat(args).join(''))
 
 ###
-	String.prototype.trim
+  String.prototype.trim
 -------------------------------------------------------------------------	
-	Removes the leading and trailing whitespace from a String.
+  Removes the leading and trailing whitespace from a String.
    
-   Usage: " foobar  ".trim() => "foobar"
+  Usage: " foobar  ".trim() => "foobar"
 	
-	@return {String}
+  @return {String}
 ###
 String.method('trim', -> this.replace(/^\s+|\s+$/g, ''))
 
 ###
-	String.prototype.reverse
+  String.prototype.reverse
 -------------------------------------------------------------------------
-	Reverses the character order in a String.
+  Reverses the character order in a String.
    
-   Usage: "foobar".reverse() => "raboof"
+  Usage: "foobar".reverse() => "raboof"
 	
-	@return {String}
+  @return {String}
 ###
 String.method('reverse', -> this.split().reverse().join('') )
 
 ###
-	Function.prototype.curry
+  Function.prototype.curry
 -------------------------------------------------------------------------
-	Provides a curried method for the given Function. Idea from 
-	Stoyan Stefanov's book "JavaScript Design Patterns".
+  Provides a curried method for the given Function. Idea from 
+  Stoyan Stefanov's book "JavaScript Patterns".
    
-   Usage: 
-      var add = function(x, y){ return x + y; }; 
-      var add10 = add.curry(10);
-      add10(5) => 15
+  Usage: 
+    var add = function(x, y){ return x + y; }; 
+    var add10 = add.curry(10);
+    add10(5) => 15
 	
-	@param {Function} fn
-	@return {Function}
+  @param {Function} fn
+  @return {Function}
 ###
 Function.method('curry', ()-> 
   stored_args = Array.prototype.slice.call(arguments, 0)
   (args...)-> this.apply(null, stored_args.concat(args)))
 
 ###
-	Array.prototype.forEach
+  Array.prototype.forEach
 -------------------------------------------------------------------------
-	Provides a shim to older environments that do not support Array.forEach.
+  Provides a shim to older environments that do not support Array.forEach.
 	
-	Usage: [1,2,3].forEach(function(num){ log(num); });
+  Usage: [1,2,3].forEach(function(num){ log(num); });
 	
-	@param {Function}
-		@param {Object} current item
-		@parma {Number} iterator
-	@param {Object} context
+  @param {Function}
+    @param {Object} current item
+    @parma {Number} iterator
+  @param {Object} context
 ###
 Array.method('forEach', (fn, context)->
   fn.apply context, item for item in this
-  return)
+  this
+)
