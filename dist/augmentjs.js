@@ -99,4 +99,24 @@
     };
   });
 
+  /*
+  	Array.prototype.forEach
+  -------------------------------------------------------------------------
+  	Provides a shim to older environments that do not support Array.forEach.
+  	Usage: [1,2,3].forEach(function(num){ log(num); });
+  	@param {Function}
+  		@param {Object} current item
+  		@parma {Number} iterator
+  	@param {Object} context
+  */
+
+
+  Array.method('forEach', function(fn, context) {
+    var item, _i, _len;
+    for (_i = 0, _len = this.length; _i < _len; _i++) {
+      item = this[_i];
+      fn.apply(context, item);
+    }
+  });
+
 }).call(this);

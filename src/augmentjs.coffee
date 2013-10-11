@@ -66,3 +66,18 @@ String.method('reverse', -> this.split().reverse().join('') )
 Function.method('curry', ()-> 
 	stored_args = Array.prototype.slice.call(arguments, 0)
 	(args...)-> this.apply(null, stored_args.concat(args)))
+
+###
+	Array.prototype.forEach
+-------------------------------------------------------------------------
+	Provides a shim to older environments that do not support Array.forEach.
+	Usage: [1,2,3].forEach(function(num){ log(num); });
+	@param {Function}
+		@param {Object} current item
+		@parma {Number} iterator
+	@param {Object} context
+###
+Array.method('forEach', (fn, context)->
+	fn.apply context, item for item in this
+	return
+)
