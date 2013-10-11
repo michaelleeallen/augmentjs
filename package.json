@@ -1,5 +1,18 @@
 {
 	"name": "augmentjs",
 	"version": "0.1.7",
-	"main": "dist/augment.js"
+	"main": "dist/augment.js",
+	"description": "A library for augmenting primitive JavaScript data types with non-destructive convenience methods.",
+	"keywords": [
+		"library",
+		"javascript"
+	],
+	"repository": {
+	 "type": "git",
+	 "url": "git://github.com/michaelleeallen/augmentjs"
+	},
+	"author": {
+	 "name": "Michael Allen",
+	 "email": "michael.lee.allen@gmail.com"
+	},
 }
