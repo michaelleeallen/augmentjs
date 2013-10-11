@@ -74,7 +74,8 @@ String.method('reverse', -> this.split().reverse().join('') )
 ###
 Function.method('curry', ()-> 
   stored_args = Array.prototype.slice.call(arguments, 0)
-  (args...)-> this.apply(null, stored_args.concat(args)))
+  fn = this
+  (args...)-> fn.apply(null, stored_args.concat(args)))
 
 ###
   Array.prototype.forEach

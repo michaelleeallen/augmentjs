@@ -99,12 +99,13 @@
 
 
   Function.method('curry', function() {
-    var stored_args;
+    var fn, stored_args;
     stored_args = Array.prototype.slice.call(arguments, 0);
+    fn = this;
     return function() {
       var args;
       args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-      return this.apply(null, stored_args.concat(args));
+      return fn.apply(null, stored_args.concat(args));
     };
   });
 

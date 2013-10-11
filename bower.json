@@ -1,6 +1,6 @@
 {
 	"name": "augmentjs",
-	"version": "0.1.7",
+	"version": "0.1.8",
 	"main": "dist/augment.js",
-	"ignore": ['src']
+	"ignore": ["src"]
 }
