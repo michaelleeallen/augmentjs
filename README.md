@@ -32,4 +32,7 @@ To use in the browser just include the library like a normal script:
 	<script src="path/to/augment.js"></script>
 	
 ## Usage
-TODO
+See comments in src/augment.coffee for available methods. 
+
+*Please fork this repo and provide your own methods. Help this 
+library grow!*
