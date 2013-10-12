@@ -56,6 +56,42 @@ Object.method('beget', (obj)->
   new F())
 
 ###
+  Object.prototype.map
+-------------------------------------------------------------------------
+  Allows for translating one Object into a schema-like Object by mapping
+  keys. Useful for dealing with JSON-based services that return data in
+  a format that is not suitable to your application. This can also be used
+  as a lightweight ORM.
+
+  @param {Object} schema to be mapped to
+  @return {Object} the mapped Object
+###
+Object.method('map', (mapObj)->
+  if not mapObj then throw new Error "Object.map: Schema cannot be null."
+
+  mappedObj = 
+    _map: mapObj
+    _reverseMap: {}
+
+  for prop of this
+    if mapObj.hasOwnProperty prop
+      mappedObj[mapObj[prop]] = this[prop]
+      mappedObj._reverseMap[mapObj[prop]] = prop;
+
+  mappedObj
+)
+
+###
+  Object.prototpye.reverseMap
+------------------------------------------------------------------------- 
+  Performs a map of the Object's _reverseMap, created when you call 
+  Object.map. This translates the object back to its original state.
+
+  @return {Object}  
+###
+Object.method('reverseMap', -> this.map(this._reverseMap))
+
+###
   String.prototype.join
 -------------------------------------------------------------------------	
   Join n number of Strings to a String. Accepts any number
