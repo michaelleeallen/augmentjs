@@ -61,6 +61,18 @@
 				equal(newTestObj.type, "foo");
 				equal(otherObj.name, "Testy");
 				equal(otherObj.type, "other");
+
+				var schema = {foo: "name", bar: "type"};
+				var obj = {foo: "Homer", bar: "character"};
+				var transObj = obj.map(schema);				
+				equal(transObj.name, "Homer");
+				equal(transObj.type, "character");
+				equal(transObj._reverseMap.name, "foo");
+				equal(transObj._reverseMap.type, "bar");
+
+				var oData = transObj.reverseMap();
+				equal(oData.foo, "Homer");
+				equal(oData.bar, "character");
 			});
 
 		</script>
