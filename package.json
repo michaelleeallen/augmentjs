@@ -1,6 +1,6 @@
 {
 	"name": "augmentjs",
-	"version": "0.1.8",
+	"version": "0.2.0",
 	"main": "dist/augment.js",
 	"description": "A library for augmenting primitive JavaScript data types with non-destructive convenience methods.",
 	"keywords": [
