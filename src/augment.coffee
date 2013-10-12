@@ -24,6 +24,38 @@ if not Function.prototype.method
     this
 
 ###
+  Function.prototype.curry
+-------------------------------------------------------------------------
+  Provides a curried method for the given Function. Idea from 
+  Stoyan Stefanov's book "JavaScript Patterns".
+   
+  Usage: 
+    var add = function(x, y){ return x + y; }; 
+    var add10 = add.curry(10);
+    add10(5) => 15
+  
+  @param {Function} fn
+  @return {Function}
+###
+Function.method('curry', ()-> 
+  stored_args = Array.prototype.slice.call(arguments, 0)
+  fn = this
+  (args...)-> fn.apply(null, stored_args.concat(args)))
+
+###
+  Object.prototyp.create
+------------------------------------------------------------------------- 
+  Create a new Object with given prototype, or from the Object itsetlf.
+
+  @param {Object} new Object's prototype
+  @return {Object}
+###
+Object.method('beget', (obj)-> 
+  F = ->
+  F.prototype = obj or this
+  new F())
+
+###
   String.prototype.join
 -------------------------------------------------------------------------	
   Join n number of Strings to a String. Accepts any number
@@ -59,25 +91,6 @@ String.method('trim', -> this.replace(/^\s+|\s+$/g, ''))
 String.method('reverse', -> this.split('').reverse().join(''))
 
 ###
-  Function.prototype.curry
--------------------------------------------------------------------------
-  Provides a curried method for the given Function. Idea from 
-  Stoyan Stefanov's book "JavaScript Patterns".
-   
-  Usage: 
-    var add = function(x, y){ return x + y; }; 
-    var add10 = add.curry(10);
-    add10(5) => 15
-	
-  @param {Function} fn
-  @return {Function}
-###
-Function.method('curry', ()-> 
-  stored_args = Array.prototype.slice.call(arguments, 0)
-  fn = this
-  (args...)-> fn.apply(null, stored_args.concat(args)))
-
-###
   Array.prototype.forEach
 -------------------------------------------------------------------------
   Provides a shim to older environments that do not support Array.forEach.
@@ -89,7 +102,7 @@ Function.method('curry', ()->
     @parma {Number} iterator
   @param {Object} context
 ###
-Array.method('each', (fn, context)->
+Array.method('forEach', (fn, context)->
   context = context or null
   fn.call context, item for item in this
   this
