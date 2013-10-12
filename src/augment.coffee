@@ -56,7 +56,7 @@ String.method('trim', -> this.replace(/^\s+|\s+$/g, ''))
 	
   @return {String}
 ###
-String.method('reverse', -> this.split().reverse().join('') )
+String.method('reverse', -> this.split('').reverse().join(''))
 
 ###
   Function.prototype.curry
@@ -89,7 +89,8 @@ Function.method('curry', ()->
     @parma {Number} iterator
   @param {Object} context
 ###
-Array.method('forEach', (fn, context)->
-  fn.apply context, item for item in this
+Array.method('each', (fn, context)->
+  context = context or null
+  fn.call context, item for item in this
   this
 )

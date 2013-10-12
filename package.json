@@ -14,5 +14,10 @@
 	"author": {
 	 "name": "Michael Allen",
 	 "email": "michael.lee.allen@gmail.com"
+	},
+	"devDependencies": {
+		"grunt": "0.4.1",
+		"grunt-contrib-coffee": "0.7.0",
+		"grunt-contrib-qunit": "0.3.0"
 	}
 }
