@@ -33,6 +33,50 @@
   }
 
   /*
+    Function.prototype.curry
+  -------------------------------------------------------------------------
+    Provides a curried method for the given Function. Idea from 
+    Stoyan Stefanov's book "JavaScript Patterns".
+     
+    Usage: 
+      var add = function(x, y){ return x + y; }; 
+      var add10 = add.curry(10);
+      add10(5) => 15
+    
+    @param {Function} fn
+    @return {Function}
+  */
+
+
+  Function.method('curry', function() {
+    var fn, stored_args;
+    stored_args = Array.prototype.slice.call(arguments, 0);
+    fn = this;
+    return function() {
+      var args;
+      args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      return fn.apply(null, stored_args.concat(args));
+    };
+  });
+
+  /*
+    Object.prototyp.create
+  ------------------------------------------------------------------------- 
+    Create a new Object with given prototype, or from the Object itsetlf.
+  
+    @param {Object} new Object's prototype
+    @return {Object}
+  */
+
+
+  Object.method('beget', function(obj) {
+    var F;
+    F = function() {};
+    F.prototype = obj || this;
+    return new F();
+  });
+
+  /*
     String.prototype.join
   -------------------------------------------------------------------------	
     Join n number of Strings to a String. Accepts any number
@@ -82,33 +126,6 @@
   });
 
   /*
-    Function.prototype.curry
-  -------------------------------------------------------------------------
-    Provides a curried method for the given Function. Idea from 
-    Stoyan Stefanov's book "JavaScript Patterns".
-     
-    Usage: 
-      var add = function(x, y){ return x + y; }; 
-      var add10 = add.curry(10);
-      add10(5) => 15
-  	
-    @param {Function} fn
-    @return {Function}
-  */
-
-
-  Function.method('curry', function() {
-    var fn, stored_args;
-    stored_args = Array.prototype.slice.call(arguments, 0);
-    fn = this;
-    return function() {
-      var args;
-      args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-      return fn.apply(null, stored_args.concat(args));
-    };
-  });
-
-  /*
     Array.prototype.forEach
   -------------------------------------------------------------------------
     Provides a shim to older environments that do not support Array.forEach.
@@ -122,7 +139,7 @@
   */
 
 
-  Array.method('each', function(fn, context) {
+  Array.method('forEach', function(fn, context) {
     var item, _i, _len;
     context = context || null;
     for (_i = 0, _len = this.length; _i < _len; _i++) {
