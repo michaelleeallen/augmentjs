@@ -48,8 +48,8 @@
 			test('Function methods', function(){
 				var add = function(x, y){ return x + y; }
 				var add5 = add.curry(5);
-				equal(add5(1), 6);
-				equal(add5(10), 15);
+				equal(add5(1), 6, "Partial application succeeded.");
+				equal(add5(10), 15, "Partial application succeeded.");
 			});
 
 			test('Object methods', function(){
@@ -57,22 +57,25 @@
 				var newTestObj = testObj.beget();
 				var otherObj = Object.beget({name: "Testy", type: "other"});
 				
-				equal(newTestObj.name, "Foo");
-				equal(newTestObj.type, "foo");
-				equal(otherObj.name, "Testy");
-				equal(otherObj.type, "other");
+				equal(newTestObj.name, "Foo", "Created new Object successfully.");
+				equal(newTestObj.type, "foo", "Created new Object successfully.");
+				equal(otherObj.name, "Testy", "Created new Object successfully.");
+				equal(otherObj.type, "other", "Created new Object successfully.");
 
 				var schema = {foo: "name", bar: "type"};
 				var obj = {foo: "Homer", bar: "character"};
 				var transObj = obj.map(schema);				
-				equal(transObj.name, "Homer");
-				equal(transObj.type, "character");
-				equal(transObj._reverseMap.name, "foo");
-				equal(transObj._reverseMap.type, "bar");
+				equal(transObj.name, "Homer", "Successfully mapped Object schema.");
+				equal(transObj.type, "character", "Successfully mapped Object schema.");
+				equal(transObj._reverseMap.name, "foo", "Successfully mapped Object schema.");
+				equal(transObj._reverseMap.type, "bar", "Successfully mapped Object schema.");
 
 				var oData = transObj.reverseMap();
-				equal(oData.foo, "Homer");
-				equal(oData.bar, "character");
+				equal(oData.foo, "Homer", "Reversed object schema successfully.");
+				equal(oData.bar, "character", "Reversed object schema successfully.");
+
+				var errorTest = {foo: "bar"};
+				throws(errorTest.reverseMap, "Error thrown as expected");
 			});
 
 		</script>

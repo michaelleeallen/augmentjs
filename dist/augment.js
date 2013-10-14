@@ -89,19 +89,19 @@
   */
 
 
-  Object.method('map', function(mapObj) {
+  Object.method('map', function(schema) {
     var mappedObj, prop;
-    if (!mapObj) {
-      throw new Error("Object.map: Schema cannot be null.");
+    if (!schema) {
+      throw new Error("Object.map: You must pass in a schema Object to map to.");
     }
     mappedObj = {
-      _map: mapObj,
+      _map: schema,
       _reverseMap: {}
     };
     for (prop in this) {
-      if (mapObj.hasOwnProperty(prop)) {
-        mappedObj[mapObj[prop]] = this[prop];
-        mappedObj._reverseMap[mapObj[prop]] = prop;
+      if (schema.hasOwnProperty(prop)) {
+        mappedObj[schema[prop]] = this[prop];
+        mappedObj._reverseMap[schema[prop]] = prop;
       }
     }
     return mappedObj;
@@ -118,6 +118,9 @@
 
 
   Object.method('reverseMap', function() {
+    if (!this._reverseMap) {
+      throw new Error("Object.reverseMap: You must first call Object.map in order to reverse a mapping.");
+    }
     return this.map(this._reverseMap);
   });
 
