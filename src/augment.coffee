@@ -66,17 +66,17 @@ Object.method('beget', (obj)->
   @param {Object} schema to be mapped to
   @return {Object} the mapped Object
 ###
-Object.method('map', (mapObj)->
-  if not mapObj then throw new Error "Object.map: Schema cannot be null."
+Object.method('map', (schema)->
+  if not schema then throw new Error "Object.map: You must pass in a schema Object to map to."
 
   mappedObj = 
-    _map: mapObj
+    _map: schema
     _reverseMap: {}
 
   for prop of this
-    if mapObj.hasOwnProperty prop
-      mappedObj[mapObj[prop]] = this[prop]
-      mappedObj._reverseMap[mapObj[prop]] = prop;
+    if schema.hasOwnProperty prop
+      mappedObj[schema[prop]] = this[prop]
+      mappedObj._reverseMap[schema[prop]] = prop;
 
   mappedObj
 )
@@ -89,7 +89,9 @@ Object.method('map', (mapObj)->
 
   @return {Object}  
 ###
-Object.method('reverseMap', -> this.map(this._reverseMap))
+Object.method('reverseMap', -> 
+  if not this._reverseMap then throw new Error "Object.reverseMap: You must first call Object.map in order to reverse a mapping."
+  this.map(this._reverseMap))
 
 ###
   String.prototype.join
