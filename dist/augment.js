@@ -21,7 +21,8 @@
 
 
 (function() {
-  var __slice = [].slice;
+  var __slice = [].slice,
+    __hasProp = {}.hasOwnProperty;
 
   if (!Function.prototype.method) {
     Function.prototype.method = function(name, fn) {
@@ -77,51 +78,116 @@
   });
 
   /*
+    Object.prototype.fromPairs
+  ------------------------------------------------------------------------- 
+    Create new object from list of 'pairs' (2 item arrays)
+  
+    @param {Array} list of key/val pairs to populate new object with
+    @return {Object}
+  */
+
+
+  Object.method('fromPairs', function(pairs) {
+    var key, object, val, _i, _len, _ref;
+    object = {};
+    for (_i = 0, _len = pairs.length; _i < _len; _i++) {
+      _ref = pairs[_i], key = _ref[0], val = _ref[1];
+      object[key] = val;
+    }
+    return object;
+  });
+
+  /*
+    Object.prototype.toPairs
+  ------------------------------------------------------------------------- 
+    Array of key/val pairs from object
+  
+    @return {Array}
+  */
+
+
+  Object.method('toPairs', function() {
+    var key, val, _results;
+    _results = [];
+    for (key in this) {
+      if (!__hasProp.call(this, key)) continue;
+      val = this[key];
+      _results.push([key, val]);
+    }
+    return _results;
+  });
+
+  /*
     Object.prototype.map
+  ------------------------------------------------------------------------- 
+    'map' for objects.
+  
+    @param {Function} a function that takes a pair [key, value] and returns
+      a new pair to replace the old in the new object
+    @return {Object}
+  */
+
+
+  Object.method('map', function(f) {
+    return Object.fromPairs(this.toPairs().map(f));
+  });
+
+  /*
+    Object.prototype.flip
+  ------------------------------------------------------------------------- 
+    Make an object's keys its values and its values its keys
+  
+    @return {Object}
+  */
+
+
+  Object.method('flip', function() {
+    return this.map(function(_arg) {
+      var a, b;
+      a = _arg[0], b = _arg[1];
+      return [b, a];
+    });
+  });
+
+  /*
+    Object.prototype.translate
   -------------------------------------------------------------------------
     Allows for translating one Object into a schema-like Object by mapping
     keys. Useful for dealing with JSON-based services that return data in
     a format that is not suitable to your application. This can also be used
     as a lightweight ORM.
   
-    @param {Object} schema to be mapped to
-    @return {Object} the mapped Object
+    @param {Object} schema to be translated to
+    @return {Object} the translated Object
   */
 
 
-  Object.method('map', function(schema) {
-    var mappedObj, prop;
+  Object.method('translate', function(schema) {
     if (!schema) {
-      throw new Error("Object.map: You must pass in a schema Object to map to.");
+      throw new Error("Object.translate: You must pass in a schema Object to map to.");
     }
-    mappedObj = {
-      _map: schema,
-      _reverseMap: {}
-    };
-    for (prop in this) {
-      if (schema.hasOwnProperty(prop)) {
-        mappedObj[schema[prop]] = this[prop];
-        mappedObj._reverseMap[schema[prop]] = prop;
-      }
-    }
-    return mappedObj;
+    return this.map(function(_arg) {
+      var key, value;
+      key = _arg[0], value = _arg[1];
+      return [schema[key], value];
+    });
   });
 
   /*
-    Object.prototpye.reverseMap
+    Object.prototpye.reverseTranslation
   ------------------------------------------------------------------------- 
-    Performs a map of the Object's _reverseMap, created when you call 
-    Object.map. This translates the object back to its original state.
+    Performs the opposite of translate, flipping the given translation rules.
   
+    @param {Object} schema to reverse translation with
     @return {Object}
   */
 
 
-  Object.method('reverseMap', function() {
-    if (!this._reverseMap) {
-      throw new Error("Object.reverseMap: You must first call Object.map in order to reverse a mapping.");
+  Object.method('reverseTranslation', function(schema) {
+    if (!schema) {
+      throw new Error("Object.reverseTranslation: You must pass in a schema Object to map from.");
     }
-    return this.map(this._reverseMap);
+    return this.translate(schema.flip());
   });
 
   /*

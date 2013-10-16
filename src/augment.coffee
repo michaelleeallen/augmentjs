@@ -56,42 +56,76 @@ Object.method('beget', (obj)->
   new F())
 
 ###
+  Object.prototype.fromPairs
+------------------------------------------------------------------------- 
+  Create new object from list of 'pairs' (2 item arrays)
+
+  @param {Array} list of key/val pairs to populate new object with
+  @return {Object}
+###
+Object.method 'fromPairs', (pairs) ->
+  object = {}
+  object[key] = val for [key, val] in pairs
+  object
+
+###
+  Object.prototype.toPairs
+------------------------------------------------------------------------- 
+  Array of key/val pairs from object
+
+  @return {Array}
+###
+Object.method 'toPairs', ->
+  [key, val] for own key, val of this
+
+###
   Object.prototype.map
+------------------------------------------------------------------------- 
+  'map' for objects.
+
+  @param {Function} a function that takes a pair [key, value] and returns
+    a new pair to replace the old in the new object
+  @return {Object}
+###
+Object.method 'map', (f) ->
+  Object.fromPairs (@toPairs().map f)
+
+###
+  Object.prototype.flip
+------------------------------------------------------------------------- 
+  Make an object's keys its values and its values its keys
+
+  @return {Object}
+###
+Object.method 'flip', ->
+    @map ([a, b]) -> [b, a]
+
+###
+  Object.prototype.translate
 -------------------------------------------------------------------------
   Allows for translating one Object into a schema-like Object by mapping
   keys. Useful for dealing with JSON-based services that return data in
   a format that is not suitable to your application. This can also be used
   as a lightweight ORM.
 
-  @param {Object} schema to be mapped to
-  @return {Object} the mapped Object
+  @param {Object} schema to be translated to
+  @return {Object} the translated Object
 ###
-Object.method('map', (schema)->
-  if not schema then throw new Error "Object.map: You must pass in a schema Object to map to."
-
-  mappedObj = 
-    _map: schema
-    _reverseMap: {}
-
-  for prop of this
-    if schema.hasOwnProperty prop
-      mappedObj[schema[prop]] = this[prop]
-      mappedObj._reverseMap[schema[prop]] = prop;
-
-  mappedObj
-)
+Object.method 'translate', (schema)->
+  if not schema then throw new Error "Object.translate: You must pass in a schema Object to map to."
+  @map ([key, value]) -> [schema[key], value]
 
 ###
-  Object.prototpye.reverseMap
+  Object.prototpye.reverseTranslation
 ------------------------------------------------------------------------- 
-  Performs a map of the Object's _reverseMap, created when you call 
-  Object.map. This translates the object back to its original state.
+  Performs the opposite of translate, flipping the given translation rules.
 
+  @param {Object} schema to reverse translation with
   @return {Object}  
 ###
-Object.method('reverseMap', -> 
-  if not this._reverseMap then throw new Error "Object.reverseMap: You must first call Object.map in order to reverse a mapping."
-  this.map(this._reverseMap))
+Object.method 'reverseTranslation', (schema) ->
+  if not schema then throw new Error "Object.reverseTranslation: You must pass in a schema Object to map from."
+  @translate schema.flip()
 
 ###
   String.prototype.join
