@@ -107,6 +107,20 @@
 				var errorTest = {foo: "bar"};
 				throws(errorTest.reverseTranslation, "Error thrown as expected");
 
+                // Object.keys
+                var obj = {a: 1, b: 2};
+                var keys = obj.keys();
+                equal(keys.length, 2);
+                equal(keys[0], 'a');
+                equal(keys[1], 'b');
+
+                // Object.values
+                var obj = {a: 1, b: 2};
+                var values = obj.values();
+                equal(values.length, 2);
+                equal(values[0], 1);
+                equal(values[1], 2);
+
 			});
 
 		</script>
