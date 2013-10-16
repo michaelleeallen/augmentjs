@@ -1,6 +1,6 @@
 /*
   -------------------------------------------------------------------------
-    AUGMENTR
+    AUGMENT
   -------------------------------------------------------------------------
     The idea for this little library came from Douglas Crockford's book, 
     "JavaScript: The good parts.". The idea is to provide enhancements to
@@ -50,20 +50,20 @@
 
 
   Function.method('curry', function() {
-    var fn, stored_args;
-    stored_args = Array.prototype.slice.call(arguments, 0);
-    fn = this;
+    var stored_args,
+      _this = this;
+    stored_args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     return function() {
       var args;
       args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-      return fn.apply(null, stored_args.concat(args));
+      return _this.apply(null, stored_args.concat(args));
     };
   });
 
   /*
-    Object.prototyp.create
+    Object.prototype.create
   ------------------------------------------------------------------------- 
-    Create a new Object with given prototype, or from the Object itsetlf.
+    Create a new Object with given prototype, or from the Object itself.
   
     @param {Object} new Object's prototype
     @return {Object}
@@ -174,7 +174,7 @@
   });
 
   /*
-    Object.prototpye.reverseTranslation
+    Object.prototype.reverseTranslation
   ------------------------------------------------------------------------- 
     Performs the opposite of translate, flipping the given translation rules.
   
