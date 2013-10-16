@@ -1,6 +1,6 @@
 ###
   -------------------------------------------------------------------------
-    AUGMENTR
+    AUGMENT
   -------------------------------------------------------------------------
     The idea for this little library came from Douglas Crockford's book, 
     "JavaScript: The good parts.". The idea is to provide enhancements to
@@ -19,8 +19,8 @@
 ###
 if not Function.prototype.method
   Function.prototype.method = (name, fn) ->
-    if not this.prototype[name]
-      this.prototype[name] = fn;
+    if not @prototype[name]
+      @prototype[name] = fn
     this
 
 ###
@@ -37,23 +37,21 @@ if not Function.prototype.method
   @param {Function} fn
   @return {Function}
 ###
-Function.method('curry', ()-> 
-  stored_args = Array.prototype.slice.call(arguments, 0)
-  fn = this
-  (args...)-> fn.apply(null, stored_args.concat(args)))
+Function.method 'curry', (stored_args...) ->
+  (args...) => @ (stored_args.concat args)...
 
 ###
-  Object.prototyp.create
+  Object.prototype.create
 ------------------------------------------------------------------------- 
-  Create a new Object with given prototype, or from the Object itsetlf.
+  Create a new Object with given prototype, or from the Object itself.
 
   @param {Object} new Object's prototype
   @return {Object}
 ###
-Object.method('beget', (obj)-> 
+Object.method 'beget', (obj) ->
   F = ->
   F.prototype = obj or this
-  new F())
+  new F()
 
 ###
   Object.prototype.fromPairs
@@ -116,7 +114,7 @@ Object.method 'translate', (schema)->
   @map ([key, value]) -> [schema[key], value]
 
 ###
-  Object.prototpye.reverseTranslation
+  Object.prototype.reverseTranslation
 ------------------------------------------------------------------------- 
   Performs the opposite of translate, flipping the given translation rules.
 
@@ -138,7 +136,7 @@ Object.method 'reverseTranslation', (schema) ->
   @param {String[]...}
   @return {String}
 ###
-String.method('join', (args...) -> [this].concat(args).join(''))
+String.method 'join', (args...) -> [this].concat(args).join('')
 
 ###
   String.prototype.trim
@@ -149,7 +147,7 @@ String.method('join', (args...) -> [this].concat(args).join(''))
 	
   @return {String}
 ###
-String.method('trim', -> this.replace(/^\s+|\s+$/g, ''))
+String.method 'trim', -> @replace(/^\s+|\s+$/g, '')
 
 ###
   String.prototype.reverse
@@ -160,7 +158,7 @@ String.method('trim', -> this.replace(/^\s+|\s+$/g, ''))
 	
   @return {String}
 ###
-String.method('reverse', -> this.split('').reverse().join(''))
+String.method 'reverse', -> @split('').reverse().join('')
 
 ###
   Array.prototype.forEach
@@ -174,8 +172,7 @@ String.method('reverse', -> this.split('').reverse().join(''))
     @parma {Number} iterator
   @param {Object} context
 ###
-Array.method('forEach', (fn, context)->
+Array.method 'forEach', (fn, context) ->
   context = context or null
   fn.call context, item for item in this
   this
-)
