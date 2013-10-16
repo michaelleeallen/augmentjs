@@ -1,6 +1,6 @@
 ###
   -------------------------------------------------------------------------
-    AUGMENTR
+    AUGMENT
   -------------------------------------------------------------------------
     The idea for this little library came from Douglas Crockford's book, 
     "JavaScript: The good parts.". The idea is to provide enhancements to
@@ -41,9 +41,9 @@ Function.method 'curry', (stored_args...) ->
   (args...) => this (stored_args.concat args)...
 
 ###
-  Object.prototyp.create
+  Object.prototype.create
 ------------------------------------------------------------------------- 
-  Create a new Object with given prototype, or from the Object itsetlf.
+  Create a new Object with given prototype, or from the Object itself.
 
   @param {Object} new Object's prototype
   @return {Object}
@@ -78,7 +78,7 @@ Object.method 'map', (schema)->
   mappedObj
 
 ###
-  Object.prototpye.reverseMap
+  Object.prototype.reverseMap
 ------------------------------------------------------------------------- 
   Performs a map of the Object's _reverseMap, created when you call 
   Object.map. This translates the object back to its original state.
