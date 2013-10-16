@@ -19,8 +19,8 @@
 ###
 if not Function.prototype.method
   Function.prototype.method = (name, fn) ->
-    if not this.prototype[name]
-      this.prototype[name] = fn;
+    if not @prototype[name]
+      @prototype[name] = fn
     this
 
 ###
@@ -37,10 +37,8 @@ if not Function.prototype.method
   @param {Function} fn
   @return {Function}
 ###
-Function.method('curry', ()-> 
-  stored_args = Array.prototype.slice.call(arguments, 0)
-  fn = this
-  (args...)-> fn.apply(null, stored_args.concat(args)))
+Function.method 'curry', (stored_args...) ->
+  (args...) => this (stored_args.concat args)...
 
 ###
   Object.prototyp.create
@@ -50,10 +48,10 @@ Function.method('curry', ()->
   @param {Object} new Object's prototype
   @return {Object}
 ###
-Object.method('beget', (obj)-> 
+Object.method 'beget', (obj)->
   F = ->
   F.prototype = obj or this
-  new F())
+  new F()
 
 ###
   Object.prototype.map
@@ -66,20 +64,18 @@ Object.method('beget', (obj)->
   @param {Object} schema to be mapped to
   @return {Object} the mapped Object
 ###
-Object.method('map', (schema)->
+Object.method 'map', (schema)->
   if not schema then throw new Error "Object.map: You must pass in a schema Object to map to."
 
-  mappedObj = 
+  mappedObj =
     _map: schema
     _reverseMap: {}
 
-  for prop of this
-    if schema.hasOwnProperty prop
-      mappedObj[schema[prop]] = this[prop]
-      mappedObj._reverseMap[schema[prop]] = prop;
+  for own prop of this
+    mappedObj[schema[prop]] = this[prop]
+    mappedObj._reverseMap[schema[prop]] = prop
 
   mappedObj
-)
 
 ###
   Object.prototpye.reverseMap
@@ -89,9 +85,9 @@ Object.method('map', (schema)->
 
   @return {Object}  
 ###
-Object.method('reverseMap', -> 
+Object.method 'reverseMap', ->
   if not this._reverseMap then throw new Error "Object.reverseMap: You must first call Object.map in order to reverse a mapping."
-  this.map(this._reverseMap))
+  this.map(this._reverseMap)
 
 ###
   String.prototype.join
@@ -104,7 +100,7 @@ Object.method('reverseMap', ->
   @param {String[]...}
   @return {String}
 ###
-String.method('join', (args...) -> [this].concat(args).join(''))
+String.method 'join', (args...) -> [this].concat(args).join('')
 
 ###
   String.prototype.trim
@@ -115,7 +111,7 @@ String.method('join', (args...) -> [this].concat(args).join(''))
 	
   @return {String}
 ###
-String.method('trim', -> this.replace(/^\s+|\s+$/g, ''))
+String.method 'trim', -> this.replace(/^\s+|\s+$/g, '')
 
 ###
   String.prototype.reverse
@@ -126,7 +122,7 @@ String.method('trim', -> this.replace(/^\s+|\s+$/g, ''))
 	
   @return {String}
 ###
-String.method('reverse', -> this.split('').reverse().join(''))
+String.method 'reverse', -> this.split('').reverse().join('')
 
 ###
   Array.prototype.forEach
@@ -140,8 +136,7 @@ String.method('reverse', -> this.split('').reverse().join(''))
     @parma {Number} iterator
   @param {Object} context
 ###
-Array.method('forEach', (fn, context)->
+Array.method 'forEach', (fn, context)->
   context = context or null
   fn.call context, item for item in this
   this
-)
