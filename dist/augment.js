@@ -175,6 +175,45 @@
   });
 
   /*
+    Object.prototype.keys
+  ------------------------------------------------------------------------- 
+    Return an array of an object's keys
+  
+    @return {Array}
+  */
+
+
+  Object.method('keys', function() {
+    var key, _results;
+    _results = [];
+    for (key in this) {
+      if (!__hasProp.call(this, key)) continue;
+      _results.push(key);
+    }
+    return _results;
+  });
+
+  /*
+    Object.prototype.values
+  ------------------------------------------------------------------------- 
+    Return an array of an object's values
+  
+    @return {Array}
+  */
+
+
+  Object.method('values', function() {
+    var key, value, _results;
+    _results = [];
+    for (key in this) {
+      if (!__hasProp.call(this, key)) continue;
+      value = this[key];
+      _results.push(value);
+    }
+    return _results;
+  });
+
+  /*
     Object.prototype.translate
   -------------------------------------------------------------------------
     Allows for translating one Object into a schema-like Object by mapping

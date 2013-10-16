@@ -116,6 +116,24 @@ Object.method 'flip', ->
     @map ([a, b]) -> [b, a]
 
 ###
+  Object.prototype.keys
+------------------------------------------------------------------------- 
+  Return an array of an object's keys
+
+  @return {Array}
+###
+Object.method 'keys', -> key for own key of this
+
+###
+  Object.prototype.values
+------------------------------------------------------------------------- 
+  Return an array of an object's values
+
+  @return {Array}
+###
+Object.method 'values', -> value for own key, value of this
+
+###
   Object.prototype.translate
 -------------------------------------------------------------------------
   Allows for translating one Object into a schema-like Object by mapping
