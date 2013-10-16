@@ -53,6 +53,8 @@
 			});
 
 			test('Object methods', function(){
+
+                // Object.beget
 				var testObj = {name: "Foo", type: "foo"};
 				var newTestObj = testObj.beget();
 				var otherObj = Object.beget({name: "Testy", type: "other"});
@@ -62,20 +64,42 @@
 				equal(otherObj.name, "Testy", "Created new Object successfully.");
 				equal(otherObj.type, "other", "Created new Object successfully.");
 
+                // Object.fromPairs
+                var obj = Object.fromPairs([['a', 'b'], ['c', 'd']]);
+                equal(obj.a, 'b');
+                equal(obj.c, 'd');
+
+                // Object.toPairs
+                var pairs = {a: 'b', c: 'd'}.toPairs();
+                equal(pairs.length, 2);
+
+                // Object.map
+                var obj = {a: 'b'}.map(function(pair) {
+                    return ['c', 'd'];
+                });
+                equal(obj.c, 'd');
+
+                // Object.flip
+                var obj = {foo: "bar", baz: "bif"};
+                var flipped = obj.flip();
+                equal(flipped.bar, "foo");
+                equal(flipped.bif, "baz");
+
+                // Object.translate
 				var schema = {foo: "name", bar: "type"};
 				var obj = {foo: "Homer", bar: "character"};
-				var transObj = obj.map(schema);				
-				equal(transObj.name, "Homer", "Successfully mapped Object schema.");
-				equal(transObj.type, "character", "Successfully mapped Object schema.");
-				equal(transObj._reverseMap.name, "foo", "Successfully mapped Object schema.");
-				equal(transObj._reverseMap.type, "bar", "Successfully mapped Object schema.");
+				var transObj = obj.translate(schema);				
+				equal(transObj.name, "Homer", "Successfully translated Object schema.");
+				equal(transObj.type, "character", "Successfully translated Object schema.");
 
-				var oData = transObj.reverseMap();
+                // Object.reverseTranslation
+				var oData = transObj.reverseTranslation(schema);
 				equal(oData.foo, "Homer", "Reversed object schema successfully.");
 				equal(oData.bar, "character", "Reversed object schema successfully.");
 
 				var errorTest = {foo: "bar"};
-				throws(errorTest.reverseMap, "Error thrown as expected");
+				throws(errorTest.reverseTranslation, "Error thrown as expected");
+
 			});
 
 		</script>
