@@ -41,7 +41,24 @@ Function.method 'curry', (stored_args...) ->
   (args...) => @ (stored_args.concat args)...
 
 ###
-  Object.prototype.create
+  Function.prototype.compose
+-------------------------------------------------------------------------
+  Compose the current function with the given function.
+
+  Usage:
+    var plus5 = function(x){ return x + 5; };
+    var times2 = function(x){ return x * 2; };
+    var plus5times2 = plus5.compose(times2);
+    plus5times2(5) => 20
+  
+  @param {Function}
+  @return {Function}
+###
+Function.method 'compose', (f) ->
+    (args...) => f this args...
+
+###
+  Object.prototype.beget
 ------------------------------------------------------------------------- 
   Create a new Object with given prototype, or from the Object itself.
 
