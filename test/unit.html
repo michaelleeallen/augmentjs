@@ -50,6 +50,13 @@
 				var add5 = add.curry(5);
 				equal(add5(1), 6, "Partial application succeeded.");
 				equal(add5(10), 15, "Partial application succeeded.");
+
+                // Object.compose
+                var plus5 = function(x){ return x + 5; };
+                var times2 = function(x){ return x * 2; };
+                var plus5times2 = plus5.compose(times2);
+                equal(plus5times2(5), 20, "Function composition succeeded");
+                equal(plus5times2(10), 30, "Function composition succeeded");
 			});
 
 			test('Object methods', function(){
