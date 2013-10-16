@@ -21,7 +21,8 @@
 
 
 (function() {
-  var __slice = [].slice;
+  var __slice = [].slice,
+    __hasProp = {}.hasOwnProperty;
 
   if (!Function.prototype.method) {
     Function.prototype.method = function(name, fn) {
@@ -49,13 +50,13 @@
 
 
   Function.method('curry', function() {
-    var fn, stored_args;
-    stored_args = Array.prototype.slice.call(arguments, 0);
-    fn = this;
+    var stored_args,
+      _this = this;
+    stored_args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     return function() {
       var args;
       args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-      return fn.apply(null, stored_args.concat(args));
+      return _this.apply(null, stored_args.concat(args));
     };
   });
 
@@ -99,10 +100,9 @@
       _reverseMap: {}
     };
     for (prop in this) {
-      if (schema.hasOwnProperty(prop)) {
-        mappedObj[schema[prop]] = this[prop];
-        mappedObj._reverseMap[schema[prop]] = prop;
-      }
+      if (!__hasProp.call(this, prop)) continue;
+      mappedObj[schema[prop]] = this[prop];
+      mappedObj._reverseMap[schema[prop]] = prop;
     }
     return mappedObj;
   });
