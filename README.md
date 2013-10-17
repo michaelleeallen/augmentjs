@@ -1,4 +1,4 @@
-augmentjs
+augmentjs  [![Build Status](https://travis-ci.org/michaelleeallen/augmentjs.png)](https://travis-ci.org/michaelleeallen/augmentjs)
 ========
 
 *Please fork this repo and provide your own methods. Help this library grow!*
