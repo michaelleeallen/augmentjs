@@ -1,24 +1,8 @@
 augmentjs  [![Build Status](https://travis-ci.org/michaelleeallen/augmentjs.png)](https://travis-ci.org/michaelleeallen/augmentjs)
 ========
 
-*Please fork this repo and provide your own methods. Help this library grow!*
-
 A library for augmenting primitive JavaScript data types with non-destructive convenience methods. This library
-is largely inspired by Douglas Crockford's book "JavaScript: The Good Parts". There are other libraries that tackle this
-same problem but use a very different philosophy to extending primitive types. Libraries like Underscore.js provide nice 
-convenience methods for Strings, Objects and Arrays, but do not actually modify the underlying primitive type, which results
-in code that is more Functional and looks like this:
-
-	var foo = _.escape("foo & bar");  // "foo &amp; bar"
-  
-Which is fine, but I prefer the following more fluent syntax:
-
-	var foo = "foo & bar".escape();  // "foo &amp; bar"
-
-Chaining is made much more simple if we modify the primitive type:
-
-	var foo = "  foo & ".escape().join("bar  ").trim();  // "foo &amp; bar"
-	
+is largely inspired by Douglas Crockford's book "JavaScript: The Good Parts". I do not recommend actually using this library in production as it is not a good idea to modify the primitive types, but it is nice to play around with.
 	
 ## Installation
 To install with node:
@@ -47,6 +31,3 @@ For node:
 For browser environments just include script and start using the methods like normal.
 
 See comments in src/augment.coffee for available methods. 
-
-*Please fork this repo and provide your own methods. Help this 
-library grow!*
