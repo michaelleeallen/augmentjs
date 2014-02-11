@@ -2,18 +2,18 @@
   -------------------------------------------------------------------------
     AUGMENT
   -------------------------------------------------------------------------
-    The idea for this little library came from Douglas Crockford's book, 
+    The idea for this little library came from Douglas Crockford's book,
     "JavaScript: The good parts.". The idea is to provide enhancements to
     the primitive JavaScript data types in a non-destructive way.
 */
 
 
-/* 
+/*
   Function.prototype.method
 -------------------------------------------------------------------------
   Allows user to create new methods on primitive types without
   overriding default implementations if present.
-	
+
 	@param {String} name
 	@param {Function} fn
 	@return {Function}
@@ -36,14 +36,14 @@
   /*
     Function.prototype.curry
   -------------------------------------------------------------------------
-    Provides a curried method for the given Function. Idea from 
+    Provides a curried method for the given Function. Idea from
     Stoyan Stefanov's book "JavaScript Patterns".
-     
-    Usage: 
-      var add = function(x, y){ return x + y; }; 
+  
+    Usage:
+      var add = function(x, y){ return x + y; };
       var add10 = add.curry(10);
       add10(5) => 15
-    
+  
     @param {Function} fn
     @return {Function}
   */
@@ -70,7 +70,7 @@
       var times2 = function(x){ return x * 2; };
       var plus5times2 = plus5.compose(times2);
       plus5times2(5) => 20
-    
+  
     @param {Function}
     @return {Function}
   */
@@ -87,7 +87,7 @@
 
   /*
     Object.prototype.beget
-  ------------------------------------------------------------------------- 
+  -------------------------------------------------------------------------
     Create a new Object with given prototype, or from the Object itself.
   
     @param {Object} new Object's prototype
@@ -104,7 +104,7 @@
 
   /*
     Object.prototype.fromPairs
-  ------------------------------------------------------------------------- 
+  -------------------------------------------------------------------------
     Create new object from list of 'pairs' (2 item arrays)
   
     @param {Array} list of key/val pairs to populate new object with
@@ -124,7 +124,7 @@
 
   /*
     Object.prototype.toPairs
-  ------------------------------------------------------------------------- 
+  -------------------------------------------------------------------------
     Array of key/val pairs from object
   
     @return {Array}
@@ -144,7 +144,7 @@
 
   /*
     Object.prototype.map
-  ------------------------------------------------------------------------- 
+  -------------------------------------------------------------------------
     'map' for objects.
   
     @param {Function} a function that takes a pair [key, value] and returns
@@ -159,7 +159,7 @@
 
   /*
     Object.prototype.flip
-  ------------------------------------------------------------------------- 
+  -------------------------------------------------------------------------
     Make an object's keys its values and its values its keys
   
     @return {Object}
@@ -176,7 +176,7 @@
 
   /*
     Object.prototype.keys
-  ------------------------------------------------------------------------- 
+  -------------------------------------------------------------------------
     Return an array of an object's keys
   
     @return {Array}
@@ -195,7 +195,7 @@
 
   /*
     Object.prototype.values
-  ------------------------------------------------------------------------- 
+  -------------------------------------------------------------------------
     Return an array of an object's values
   
     @return {Array}
@@ -239,7 +239,7 @@
 
   /*
     Object.prototype.reverseTranslation
-  ------------------------------------------------------------------------- 
+  -------------------------------------------------------------------------
     Performs the opposite of translate, flipping the given translation rules.
   
     @param {Object} schema to reverse translation with
@@ -256,12 +256,12 @@
 
   /*
     String.prototype.join
-  -------------------------------------------------------------------------	
+  -------------------------------------------------------------------------
     Join n number of Strings to a String. Accepts any number
     of arguments. More memory efficient that "+" String concatenation.
-     
+  
     Usage: "one".join("two", "three"); => "onetwothree"
-  	
+  
     @param {String[]...}
     @return {String}
   */
@@ -275,11 +275,11 @@
 
   /*
     String.prototype.trim
-  -------------------------------------------------------------------------	
+  -------------------------------------------------------------------------
     Removes the leading and trailing whitespace from a String.
-     
+  
     Usage: " foobar  ".trim() => "foobar"
-  	
+  
     @return {String}
   */
 
@@ -292,9 +292,9 @@
     String.prototype.reverse
   -------------------------------------------------------------------------
     Reverses the character order in a String.
-     
+  
     Usage: "foobar".reverse() => "raboof"
-  	
+  
     @return {String}
   */
 
@@ -307,9 +307,9 @@
     Array.prototype.forEach
   -------------------------------------------------------------------------
     Provides a shim to older environments that do not support Array.forEach.
-  	
+  
     Usage: [1,2,3].forEach(function(num){ log(num); });
-  	
+  
     @param {Function}
       @param {Object} current item
       @parma {Number} iterator
@@ -325,6 +325,26 @@
       fn.call(context, item);
     }
     return this;
+  });
+
+  /*
+    Array.prototype.map
+  ---------------------------------------------------------------------------
+    Provides a shim to older environments that do not support Array.map.
+  
+    Usage: [1,2,3].map(function(num){ return num + 1; }); // [2,3,4]
+  */
+
+
+  Array.method('map', function(fn, context) {
+    var item, newArr, _i, _len;
+    newArr = [];
+    context || (context = null);
+    for (_i = 0, _len = this.length; _i < _len; _i++) {
+      item = this[_i];
+      newArr.push(fn.call(context, item));
+    }
+    return newArr;
   });
 
 }).call(this);

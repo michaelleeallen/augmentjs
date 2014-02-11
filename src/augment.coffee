@@ -2,17 +2,17 @@
   -------------------------------------------------------------------------
     AUGMENT
   -------------------------------------------------------------------------
-    The idea for this little library came from Douglas Crockford's book, 
+    The idea for this little library came from Douglas Crockford's book,
     "JavaScript: The good parts.". The idea is to provide enhancements to
     the primitive JavaScript data types in a non-destructive way.
 ###
 
-### 
+###
   Function.prototype.method
 -------------------------------------------------------------------------
   Allows user to create new methods on primitive types without
   overriding default implementations if present.
-	
+
 	@param {String} name
 	@param {Function} fn
 	@return {Function}
@@ -26,14 +26,14 @@ if not Function.prototype.method
 ###
   Function.prototype.curry
 -------------------------------------------------------------------------
-  Provides a curried method for the given Function. Idea from 
+  Provides a curried method for the given Function. Idea from
   Stoyan Stefanov's book "JavaScript Patterns".
-   
-  Usage: 
-    var add = function(x, y){ return x + y; }; 
+
+  Usage:
+    var add = function(x, y){ return x + y; };
     var add10 = add.curry(10);
     add10(5) => 15
-  
+
   @param {Function} fn
   @return {Function}
 ###
@@ -50,7 +50,7 @@ Function.method 'curry', (stored_args...) ->
     var times2 = function(x){ return x * 2; };
     var plus5times2 = plus5.compose(times2);
     plus5times2(5) => 20
-  
+
   @param {Function}
   @return {Function}
 ###
@@ -59,7 +59,7 @@ Function.method 'compose', (f) ->
 
 ###
   Object.prototype.beget
-------------------------------------------------------------------------- 
+-------------------------------------------------------------------------
   Create a new Object with given prototype, or from the Object itself.
 
   @param {Object} new Object's prototype
@@ -72,7 +72,7 @@ Object.method 'beget', (obj) ->
 
 ###
   Object.prototype.fromPairs
-------------------------------------------------------------------------- 
+-------------------------------------------------------------------------
   Create new object from list of 'pairs' (2 item arrays)
 
   @param {Array} list of key/val pairs to populate new object with
@@ -85,7 +85,7 @@ Object.method 'fromPairs', (pairs) ->
 
 ###
   Object.prototype.toPairs
-------------------------------------------------------------------------- 
+-------------------------------------------------------------------------
   Array of key/val pairs from object
 
   @return {Array}
@@ -95,7 +95,7 @@ Object.method 'toPairs', ->
 
 ###
   Object.prototype.map
-------------------------------------------------------------------------- 
+-------------------------------------------------------------------------
   'map' for objects.
 
   @param {Function} a function that takes a pair [key, value] and returns
@@ -107,7 +107,7 @@ Object.method 'map', (f) ->
 
 ###
   Object.prototype.flip
-------------------------------------------------------------------------- 
+-------------------------------------------------------------------------
   Make an object's keys its values and its values its keys
 
   @return {Object}
@@ -117,7 +117,7 @@ Object.method 'flip', ->
 
 ###
   Object.prototype.keys
-------------------------------------------------------------------------- 
+-------------------------------------------------------------------------
   Return an array of an object's keys
 
   @return {Array}
@@ -126,7 +126,7 @@ Object.method 'keys', -> key for own key of this
 
 ###
   Object.prototype.values
-------------------------------------------------------------------------- 
+-------------------------------------------------------------------------
   Return an array of an object's values
 
   @return {Array}
@@ -150,11 +150,11 @@ Object.method 'translate', (schema)->
 
 ###
   Object.prototype.reverseTranslation
-------------------------------------------------------------------------- 
+-------------------------------------------------------------------------
   Performs the opposite of translate, flipping the given translation rules.
 
   @param {Object} schema to reverse translation with
-  @return {Object}  
+  @return {Object}
 ###
 Object.method 'reverseTranslation', (schema) ->
   if not schema then throw new Error "Object.reverseTranslation: You must pass in a schema Object to map from."
@@ -162,12 +162,12 @@ Object.method 'reverseTranslation', (schema) ->
 
 ###
   String.prototype.join
--------------------------------------------------------------------------	
+-------------------------------------------------------------------------
   Join n number of Strings to a String. Accepts any number
   of arguments. More memory efficient that "+" String concatenation.
-   
+
   Usage: "one".join("two", "three"); => "onetwothree"
-	
+
   @param {String[]...}
   @return {String}
 ###
@@ -175,11 +175,11 @@ String.method 'join', (args...) -> [this].concat(args).join('')
 
 ###
   String.prototype.trim
--------------------------------------------------------------------------	
+-------------------------------------------------------------------------
   Removes the leading and trailing whitespace from a String.
-   
+
   Usage: " foobar  ".trim() => "foobar"
-	
+
   @return {String}
 ###
 String.method 'trim', -> @replace(/^\s+|\s+$/g, '')
@@ -188,9 +188,9 @@ String.method 'trim', -> @replace(/^\s+|\s+$/g, '')
   String.prototype.reverse
 -------------------------------------------------------------------------
   Reverses the character order in a String.
-   
+
   Usage: "foobar".reverse() => "raboof"
-	
+
   @return {String}
 ###
 String.method 'reverse', -> @split('').reverse().join('')
@@ -199,9 +199,9 @@ String.method 'reverse', -> @split('').reverse().join('')
   Array.prototype.forEach
 -------------------------------------------------------------------------
   Provides a shim to older environments that do not support Array.forEach.
-	
+
   Usage: [1,2,3].forEach(function(num){ log(num); });
-	
+
   @param {Function}
     @param {Object} current item
     @parma {Number} iterator
@@ -209,5 +209,18 @@ String.method 'reverse', -> @split('').reverse().join('')
 ###
 Array.method 'forEach', (fn, context) ->
   context = context or null
-  fn.call context, item for item in this
-  this
+  fn.call context, item for item in @
+  @
+
+###
+  Array.prototype.map
+---------------------------------------------------------------------------
+  Provides a shim to older environments that do not support Array.map.
+
+  Usage: [1,2,3].map(function(num){ return num + 1; }); // [2,3,4]
+###
+Array.method 'map', (fn, context) ->
+  newArr = []
+  context || (context = null)
+  newArr.push fn.call context, item for item in @
+  newArr
